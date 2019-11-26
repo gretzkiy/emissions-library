@@ -7,7 +7,7 @@ namespace EmissionsLibrary
     public class Parameter
     {
         // Уникальный идентификатор показания
-        public readonly string parameterUuid;
+        public string parameterUuid;
 
         // Тип показания
         public string code;
@@ -19,11 +19,16 @@ namespace EmissionsLibrary
         public string type;
 
         // Значения измерений
-        public Value[] values;
+        public Value[] values = new Value[] { };
 
         public Parameter()
         {
             parameterUuid = Guid.NewGuid().ToString();
+        }
+
+        public override string ToString()
+        {
+            return "Показатель " + code;
         }
     }
 }

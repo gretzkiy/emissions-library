@@ -13,13 +13,10 @@ namespace EmissionsLibrary
         public int pniv;
 
         // Датчики, установленные на источнике выбросов
-        public Sensor[] sensors;
+        public Sensor[] sensors = new Sensor[] { };
 
-        public Source() { }
-
-        public Source(int _pniv)
+        public Source()
         {
-            pniv = _pniv;
             sourceUuid = Guid.NewGuid().ToString();
         }
 

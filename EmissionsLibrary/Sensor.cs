@@ -4,24 +4,19 @@ using System.Text;
 
 namespace EmissionsLibrary
 {
-    public enum State { OK, ERROR, MAINTENANCE };
-
     public class Sensor
     {
         // Уникальный идентификатор датчика
         public string sensorUuid;
 
         // Состояние датчика {OK, ERROR, MAINTENANCE}
-        public State state;
+        public string state;
 
         // Показатели (параметры), которые измеряет датчик
-        public Parameter[] parameters;
+        public Parameter[] parameters = new Parameter[] { };
 
-        public Sensor() { }
-
-        public Sensor(State _state)
+        public Sensor()
         {
-            state = _state;
             sensorUuid = Guid.NewGuid().ToString();
         }
 
