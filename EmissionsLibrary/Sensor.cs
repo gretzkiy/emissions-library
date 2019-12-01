@@ -9,13 +9,16 @@ namespace EmissionsLibrary
     public class Sensor
     {
         // Уникальный идентификатор датчика
-        public string sensorUuid;
+        public string sensorUuid { get; set; }
 
         // Состояние датчика {OK, ERROR, MAINTENANCE}
-        public string state;
+        public string state { get; set; }
 
         // Уникальный идентификатор источника выбросов, на котором расположен данный сенсор
-        public string sourceUuid;
+        public string sourceUuid { get; set; }
+
+        // Название таблицы в БД
+        public const string tableName = "Sensors";
 
         public Sensor()
         {
@@ -32,7 +35,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "SELECT * FROM Sensors;";
+                var sqlQuery = $"SELECT * FROM {tableName};";
                 return connection.Query<Sensor>(sqlQuery).ToList();
             }
         }
@@ -42,7 +45,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "SELECT * FROM Parameters Param WHERE Param.sensorUuid = @sensorUuid;";
+                var sqlQuery = $"SELECT * FROM {Parameter.tableName} Param WHERE Param.sensorUuid = @sensorUuid;";
                 return connection.Query<Parameter>(sqlQuery, new { sensorUuid }).ToList();
             }
         }
@@ -52,7 +55,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "INSERT INTO Sensors (sensorUuid, state, sourceUuid)" +
+                var sqlQuery = $"INSERT INTO {tableName} (sensorUuid, state, sourceUuid)" +
                     " VALUES (@sensorUuid, @state, @sourceUuid);";
 
                 connection.Execute(sqlQuery, sensor);

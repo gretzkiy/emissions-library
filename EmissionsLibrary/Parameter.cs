@@ -9,19 +9,22 @@ namespace EmissionsLibrary
     public class Parameter
     {
         // Уникальный идентификатор показания
-        public string parameterUuid;
+        public string parameterUuid { get; set; }
 
         // Тип показания
-        public string code;
+        public string code { get; set; }
 
         // Единица измерения показания
-        public string unit;
+        public string unit { get; set; }
 
         // Тип данных показания
-        public string type;
+        public string type { get; set; }
 
         // Уникальный идентификатор сенсора
-        public string sensorUuid;
+        public string sensorUuid { get; set; }
+
+        // Название таблицы в БД
+        public const string tableName = "Parameters";
 
         public Parameter()
         {
@@ -38,7 +41,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "SELECT * FROM Parameters;";
+                var sqlQuery = $"SELECT * FROM {tableName};";
                 return connection.Query<Parameter>(sqlQuery).ToList();
             }
         }
@@ -48,7 +51,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "SELECT * FROM Values Val WHERE Val.parameterUuid = @parameterUuid;";
+                var sqlQuery = $"SELECT * FROM {Value.tableName} Val WHERE Val.parameterUuid = @parameterUuid;";
                 return connection.Query<Value>(sqlQuery, new { parameterUuid }).ToList();
             }
         } 
@@ -58,7 +61,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "INSERT INTO Parameters (parameterUuid, code, unit, type, sensorUuid)" +
+                var sqlQuery = $"INSERT INTO {tableName} (parameterUuid, code, unit, type, sensorUuid)" +
                     " VALUES (@parameterUuid, @code, @unit, @type, @sensorUuid);";
 
                 connection.Execute(sqlQuery, parameter);

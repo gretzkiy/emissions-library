@@ -9,16 +9,20 @@ namespace EmissionsLibrary
     public class Value
     {
         // Уникальный идентификатор значения показания
-        public string valueUuid;
+        public string valueUuid { get; set; }
 
         // Временные отметки усреднения значения показания
-        public int timestampStart, timestampEnd;
+        public int timestampStart { get; set; }
+        public int timestampEnd { get; set; }
 
         // Значение показания
-        public string value;
+        public string value { get; set; }
 
         // Уникальный идентификатор параметра
-        public string parameterUuid;
+        public string parameterUuid { get; set; }
+
+        // Название таблицы в БД
+        public const string tableName = "Results";
 
         public Value()
         {
@@ -32,7 +36,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "SELECT * FROM Values;";
+                var sqlQuery = $"SELECT * FROM {tableName};";
                 return connection.Query<Value>(sqlQuery).ToList();
             }
         }
@@ -42,7 +46,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "INSERT INTO Values (valueUuid, timestampStart, timestampEnd, value, parameterUuid)" +
+                var sqlQuery = $"INSERT INTO {tableName} (valueUuid, timestampStart, timestampEnd, value, parameterUuid)" +
                     " VALUES (@valueUuid, @timestampStart, @timestampEnd, @value, @parameterUuid);";
 
                 connection.Execute(sqlQuery, value);

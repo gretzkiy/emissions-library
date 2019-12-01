@@ -9,10 +9,13 @@ namespace EmissionsLibrary
     public class Source
     {
         // Уникальный идентификатор источника выбросов
-        public string sourceUuid;
+        public string sourceUuid { get; set; }
 
         // Порядковый номер источника выбросов
-        public int pniv;
+        public int pniv { get; set; }
+
+        // Название таблицы в БД
+        public const string tableName = "Sources";
 
         public Source()
         {
@@ -29,7 +32,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "SELECT * FROM Sources;";
+                var sqlQuery = $"SELECT * FROM {tableName};";
                 return connection.Query<Source>(sqlQuery).ToList();
             }
         }
@@ -39,7 +42,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "SELECT * FROM Sensors Snr WHERE Snr.sourceUuid = @sourceUuid;";
+                var sqlQuery = $"SELECT * FROM {Sensor.tableName} Snr WHERE Snr.sourceUuid = @sourceUuid;";
                 return connection.Query<Sensor>(sqlQuery, new { sourceUuid }).ToList();
             }
         }
@@ -49,7 +52,7 @@ namespace EmissionsLibrary
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                var sqlQuery = "INSERT INTO Sources (sourceUuid, pniv) VALUES (@sourceUuid, @pniv);";
+                var sqlQuery = $"INSERT INTO {tableName} (sourceUuid, pniv) VALUES (@sourceUuid, @pniv);";
 
                 connection.Execute(sqlQuery, source);
             }
