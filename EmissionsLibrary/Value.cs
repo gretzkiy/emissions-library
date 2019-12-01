@@ -28,9 +28,9 @@ namespace EmissionsLibrary
         }
 
         // Получение списка всех значений из базы данных
-        public static List<Value> Get(IDbConnection connection)
+        public static List<Value> Get(string connectionString)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "SELECT * FROM Values;";
                 return connection.Query<Value>(sqlQuery).ToList();
@@ -38,9 +38,9 @@ namespace EmissionsLibrary
         }
 
         // Сохранение нового значения в базу данных
-        public static void Create(IDbConnection connection, Value value)
+        public static void Create(string connectionString, Value value)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "INSERT INTO Values (valueUuid, timestampStart, timestampEnd, value, parameterUuid)" +
                     " VALUES (@valueUuid, @timestampStart, @timestampEnd, @value, @parameterUuid);";

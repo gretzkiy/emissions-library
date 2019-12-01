@@ -27,10 +27,10 @@ namespace EmissionsLibrary
             return "Датчик " + sensorUuid;
         }
 
-        // Получение списка всех сенсоров из базы данных
-        public static List<Sensor> Get(IDbConnection connection)
+        // Получение списка всех датчиков из базы данных
+        public static List<Sensor> Get(string connectionString)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "SELECT * FROM Sensors;";
                 return connection.Query<Sensor>(sqlQuery).ToList();
@@ -38,19 +38,19 @@ namespace EmissionsLibrary
         }
 
         // Получение списка параметров, измеряемых одним датчиком
-        public static List<Parameter> GetParameters(IDbConnection connection, string sensorUuid)
+        public static List<Parameter> GetParameters(string connectionString, string sensorUuid)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "SELECT * FROM Parameters Param WHERE Param.sensorUuid = @sensorUuid;";
                 return connection.Query<Parameter>(sqlQuery, new { sensorUuid }).ToList();
             }
         }
 
-        // Сохранение нового значения в базу данных
-        public static void Create(IDbConnection connection, Sensor sensor)
+        // Сохранение нового датчика в базу данных
+        public static void Create(string connectionString, Sensor sensor)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "INSERT INTO Sensors (sensorUuid, state, sourceUuid)" +
                     " VALUES (@sensorUuid, @state, @sourceUuid);";

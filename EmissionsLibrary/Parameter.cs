@@ -34,9 +34,9 @@ namespace EmissionsLibrary
         }
 
         // Получение списка всех параметров из базы данных
-        public static List<Parameter> Get(IDbConnection connection)
+        public static List<Parameter> Get(string connectionString)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "SELECT * FROM Parameters;";
                 return connection.Query<Parameter>(sqlQuery).ToList();
@@ -44,19 +44,19 @@ namespace EmissionsLibrary
         }
 
         // Получение списка значений для одного параметра
-        public static List<Value> GetValues(IDbConnection connection, string parameterUuid)
+        public static List<Value> GetValues(string connectionString, string parameterUuid)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "SELECT * FROM Values Val WHERE Val.parameterUuid = @parameterUuid;";
                 return connection.Query<Value>(sqlQuery, new { parameterUuid }).ToList();
             }
         } 
 
-        // Сохранение нового значения в базу данных
-        public static void Create(IDbConnection connection, Parameter parameter)
+        // Сохранение нового параметра в базу данных
+        public static void Create(string connectionString, Parameter parameter)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "INSERT INTO Parameters (parameterUuid, code, unit, type, sensorUuid)" +
                     " VALUES (@parameterUuid, @code, @unit, @type, @sensorUuid);";

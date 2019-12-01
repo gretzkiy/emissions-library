@@ -25,9 +25,9 @@ namespace EmissionsLibrary
         }
 
         // Получение списка всех истоников выбросов из базы данных
-        public static List<Source> Get(IDbConnection connection)
+        public static List<Source> Get(string connectionString)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "SELECT * FROM Sources;";
                 return connection.Query<Source>(sqlQuery).ToList();
@@ -35,9 +35,9 @@ namespace EmissionsLibrary
         }
 
         // Получение списка датчиков, расположенных на данном источнике выбросов
-        public static List<Sensor> GetSensors(IDbConnection connection, string sourceUuid)
+        public static List<Sensor> GetSensors(string connectionString, string sourceUuid)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "SELECT * FROM Sensors Snr WHERE Snr.sourceUuid = @sourceUuid;";
                 return connection.Query<Sensor>(sqlQuery, new { sourceUuid }).ToList();
@@ -45,9 +45,9 @@ namespace EmissionsLibrary
         }
 
         // Сохранение нового значения в базу данных
-        public static void Create(IDbConnection connection, Source source)
+        public static void Create(string connectionString, Source source)
         {
-            using (connection)
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 var sqlQuery = "INSERT INTO Sources (sourceUuid, pniv) VALUES (@sourceUuid, @pniv);";
 
