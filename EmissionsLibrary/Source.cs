@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Data;
+using System.Linq;
 
 namespace EmissionsLibrary
 {
@@ -12,9 +14,6 @@ namespace EmissionsLibrary
         // Порядковый номер источника выбросов
         public int pniv;
 
-        // Датчики, установленные на источнике выбросов
-        public Sensor[] sensors = new Sensor[] { };
-
         public Source()
         {
             sourceUuid = Guid.NewGuid().ToString();
@@ -23,6 +22,37 @@ namespace EmissionsLibrary
         public override string ToString()
         {
             return "Источник №" + pniv.ToString();
+        }
+
+        // Получение списка всех истоников выбросов из базы данных
+        public static List<Source> Get(IDbConnection connection)
+        {
+            using (connection)
+            {
+                var sqlQuery = "SELECT * FROM Sources;";
+                return connection.Query<Source>(sqlQuery).ToList();
+            }
+        }
+
+        // Получение списка датчиков, расположенных на данном источнике выбросов
+        public static List<Sensor> GetSensors(IDbConnection connection, string sourceUuid)
+        {
+            using (connection)
+            {
+                var sqlQuery = "SELECT * FROM Sensors Snr WHERE Snr.sourceUuid = @sourceUuid;";
+                return connection.Query<Sensor>(sqlQuery, new { sourceUuid }).ToList();
+            }
+        }
+
+        // Сохранение нового значения в базу данных
+        public static void Create(IDbConnection connection, Source source)
+        {
+            using (connection)
+            {
+                var sqlQuery = "INSERT INTO Sources (sourceUuid, pniv) VALUES (@sourceUuid, @pniv);";
+
+                connection.Execute(sqlQuery, source);
+            }
         }
     }
 }
