@@ -27,7 +27,6 @@ namespace EmissionsLibrary
         public Value()
         {
             valueUuid = Guid.NewGuid().ToString();
-            timestampStart = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             timestampEnd = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
 
