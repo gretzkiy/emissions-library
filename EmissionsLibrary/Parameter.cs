@@ -46,6 +46,16 @@ namespace EmissionsLibrary
             }
         }
 
+        // Получение параметра по его parameterUuid
+        public static Parameter Get(string connectionString, string uuid)
+        {
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                var sqlQuery = $"SELECT * FROM {tableName} WHERE parameterUuid = @parameterUuid;";
+                return connection.QuerySingle<Parameter>(sqlQuery, new { parameterUuid = uuid });
+            }
+        }
+
         // Получение списка значений для одного параметра
         public static List<Value> GetValues(string connectionString, string parameterUuid)
         {

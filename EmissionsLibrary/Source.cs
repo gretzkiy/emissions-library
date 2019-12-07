@@ -37,6 +37,16 @@ namespace EmissionsLibrary
             }
         }
 
+        // Получение источника по его sourceUuid
+        public static Source Get(string connectionString, string uuid)
+        {
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                var sqlQuery = $"SELECT * FROM {tableName} WHERE sourceUuid = @sourceUuid;";
+                return connection.QuerySingle<Source>(sqlQuery, new { sourceUuid = uuid });
+            }
+        }
+
         // Получение списка датчиков, расположенных на данном источнике выбросов
         public static List<Sensor> GetSensors(string connectionString, string sourceUuid)
         {

@@ -40,6 +40,16 @@ namespace EmissionsLibrary
             }
         }
 
+        // Получение значения по его valueUuid
+        public static Value Get(string connectionString, string uuid)
+        {
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                var sqlQuery = $"SELECT * FROM {tableName} WHERE valueUuid = @valueUuid;";
+                return connection.QuerySingle<Value>(sqlQuery, new { valueUuid = uuid });
+            }
+        }
+
         // Получение новых значений за промежуток времени interval (в секундах)
         public static List<Value> GetNew(string connectionString, int interval)
         {

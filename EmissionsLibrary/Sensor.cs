@@ -40,6 +40,16 @@ namespace EmissionsLibrary
             }
         }
 
+        // Получение датчика по его sensorUuid
+        public static Sensor Get(string connectionString, string uuid)
+        {
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                var sqlQuery = $"SELECT * FROM {tableName} WHERE sensorUuid = @sensorUuid;";
+                return connection.QuerySingle<Sensor>(sqlQuery, new { sensorUuid = uuid });
+            }
+        }
+
         // Получение списка параметров, измеряемых одним датчиком
         public static List<Parameter> GetParameters(string connectionString, string sensorUuid)
         {
