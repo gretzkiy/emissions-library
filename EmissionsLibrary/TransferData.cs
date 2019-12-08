@@ -9,7 +9,7 @@ using System.IO;
 namespace EmissionsLibrary
 {
     [Serializable]
-    class TransferData
+    public class TransferData
     {
         public TransferData() { }
 
@@ -83,19 +83,31 @@ namespace EmissionsLibrary
         }
 
         // Сериализация объекта
-        public string serialize()
+        public static string Serialize(TransferData data)
         {
             XmlSerializer formatter = new XmlSerializer(typeof(TransferData));
 
             using (StringWriter textWriter = new StringWriter())
             {
-                formatter.Serialize(textWriter, this);
+                formatter.Serialize(textWriter, data);
+                return textWriter.ToString();
+            }
+        }
+
+        // Сериализация списка объектов
+        public static string Serialize(List<TransferData> dataList)
+        {
+            XmlSerializer formatter = new XmlSerializer(typeof(List<TransferData>));
+
+            using (StringWriter textWriter = new StringWriter())
+            {
+                formatter.Serialize(textWriter, dataList);
                 return textWriter.ToString();
             }
         }
 
         // Десериализация в объект
-        public static TransferData deserialize(string data)
+        public static TransferData Deserialize(string data)
         {
             XmlSerializer formatter = new XmlSerializer(typeof(TransferData));
 
