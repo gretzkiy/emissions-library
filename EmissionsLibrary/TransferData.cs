@@ -81,40 +81,5 @@ namespace EmissionsLibrary
                 return connection.QuerySingle<TransferData>(sqlQuery, new { valueUuid });
             }
         }
-
-        // Сериализация объекта
-        public static string Serialize(TransferData data)
-        {
-            XmlSerializer formatter = new XmlSerializer(typeof(TransferData));
-
-            using (StringWriter textWriter = new StringWriter())
-            {
-                formatter.Serialize(textWriter, data);
-                return textWriter.ToString();
-            }
-        }
-
-        // Сериализация списка объектов
-        public static string Serialize(List<TransferData> dataList)
-        {
-            XmlSerializer formatter = new XmlSerializer(typeof(List<TransferData>));
-
-            using (StringWriter textWriter = new StringWriter())
-            {
-                formatter.Serialize(textWriter, dataList);
-                return textWriter.ToString();
-            }
-        }
-
-        // Десериализация в объект
-        public static TransferData Deserialize(string data)
-        {
-            XmlSerializer formatter = new XmlSerializer(typeof(TransferData));
-
-            using (StringReader textReader = new StringReader(data))
-            {
-                return (TransferData)formatter.Deserialize(textReader);
-            }
-        }
     }
 }
