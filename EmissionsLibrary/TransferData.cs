@@ -5,55 +5,69 @@ using Dapper;
 using System.Data;
 using System.Xml.Serialization;
 using System.IO;
+using System.Runtime.Serialization;
 
 namespace EmissionsLibrary
 {
+    [DataContract]
     [Serializable]
     public class TransferData
     {
         public TransferData() { }
 
         // Уникальный идентификатор значения показания
+        [DataMember]
         public string valueUuid { get; set; }
 
         // Временные отметки усреднения значения показания
+        [DataMember]
         public int timestampStart { get; set; }
+        [DataMember]
         public int timestampEnd { get; set; }
 
         // Значение показания
+        [DataMember]
         public string value { get; set; }
 
         // Название таблицы в БД
         public const string valuesTableName = "Results";
 
         // Уникальный идентификатор показания
+        [DataMember]
         public string parameterUuid { get; set; }
 
         // Тип показания
+        [DataMember]
         public string code { get; set; }
 
         // Единица измерения показания
+        [DataMember]
         public string unit { get; set; }
 
         // Тип данных показания
+        [DataMember]
         public string type { get; set; }
 
         // Название таблицы в БД
         public const string parametersTableName = "Parameters";
 
         // Уникальный идентификатор датчика
+        [DataMember]
         public string sensorUuid { get; set; }
 
         // Состояние датчика {OK, ERROR, MAINTENANCE}
+        [DataMember]
         public string state { get; set; }
 
         // Название таблицы в БД
         public const string sensorsTableName = "Sensors";
 
         // Уникальный идентификатор источника выбросов
+        [DataMember]
         public string sourceUuid { get; set; }
 
         // Порядковый номер источника выбросов
+        [DataMember]
         public int pniv { get; set; }
 
         // Название таблицы в БД
